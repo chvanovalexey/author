@@ -1,11 +1,7 @@
 import streamlit as st
-import os
-import json
 import datetime
-import pandas as pd
 from config import (
     APP_TITLE,
-    APP_DESCRIPTION,
     MODELS,
     RATE_LIMITS,
     DEFAULT_TEMPERATURE
@@ -52,7 +48,7 @@ st.title(APP_TITLE)
 # Sidebar for navigation and script selection
 with st.sidebar:
     # Добавляем expander для настройки температуры как первый элемент сайдбара
-    with st.expander("Настройки температуры"):
+    with st.expander("Настройки LLM"):
         default_temperature = st.slider(
             "Температура по умолчанию", 
             min_value=0.0, 
@@ -60,6 +56,14 @@ with st.sidebar:
             value=DEFAULT_TEMPERATURE,
             step=0.1,
             help="Более высокие значения делают результат более случайным, более низкие значения делают его более целенаправленным и детерминированным"
+        )
+        
+        # Добавляем редактируемый системный промпт
+        system_prompt = st.text_area(
+            "Системный промпт",
+            value=SYSTEM_PROMPT,
+            height=200,
+            help="Установите системный промпт для AI, который определяет его роль и стиль генерации"
         )
     
     st.header("Сценарии")
@@ -293,7 +297,7 @@ if st.session_state.current_script:
     # Token counting and cost estimation
     if user_prompt:
         # Create messages and context parts for display
-        messages = create_message_from_context(SYSTEM_PROMPT, script['brief'], selected_versions, user_prompt)
+        messages = create_message_from_context(system_prompt, script['brief'], selected_versions, user_prompt)
         context_parts = get_context_parts(script['brief'], selected_versions, user_prompt)
         
         # Count tokens and estimate cost

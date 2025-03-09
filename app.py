@@ -314,7 +314,26 @@ if st.session_state.current_script:
         context_parts = get_context_parts(script['brief'], selected_versions, user_prompt)
         
         # Count tokens and estimate cost
-        full_prompt = " ".join([m["content"] for m in messages])
+        # Create a better formatted full prompt for display with clear section dividers
+        full_prompt = f"===== SYSTEM PROMPT =====\n{system_prompt}\n\n"
+        
+        brief_text = f"===== BRIEF SUMMARY =====\nBrief summary of the story: {script['brief']}"
+        full_prompt += f"{brief_text}\n\n"
+        
+        # Add previous versions if selected
+        for version in selected_versions:
+            version_number = version.get('version_number', 0)
+            version_text = (
+                f"===== PREVIOUS VERSION {version_number} =====\n"
+                f"Prompt: {version.get('prompt', 'No prompt')}\n\n"
+                f"Content: {version.get('content', 'No content')}"
+            )
+            full_prompt += f"{version_text}\n\n"
+        
+        # Add current user prompt
+        full_prompt += f"===== CURRENT REQUEST =====\n{user_prompt}\n\n"
+        
+        # The original messages list remains unchanged for the API call
         input_tokens = count_tokens(full_prompt, selected_model)
         
         # Estimate output tokens based on brief length
@@ -346,6 +365,11 @@ if st.session_state.current_script:
                 st.text_area(f"Содержимое {part['type']}", part["content"][:500] + ("..." if len(part["content"]) > 500 else ""), height=100, disabled=True)
                 st.text(f"Токенов: {format(count_tokens(part['content'], selected_model), ',')}")
                 st.divider()
+        
+        # Show full prompt
+        with st.expander("Полный промпт, отправляемый в LLM"):
+            st.text_area("Содержимое промпта", full_prompt, height=300, disabled=True)
+            st.text(f"Общее количество токенов: {format(input_tokens, ',')}")
         
         # Generate button
         if st.button("Создать сценарий", type="primary", disabled=input_tokens > MODELS[selected_model]["context_window"]):

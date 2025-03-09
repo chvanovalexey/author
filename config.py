@@ -11,6 +11,13 @@ Focus on natural-sounding dialogue, clear narrative structure, and vivid descrip
 The script should be ready for audio recording, with appropriate pacing and tone.
 Include sound effect suggestions and music cues where appropriate.
 Format the script for easy reading by voice actors, including character names, dialogue, and narrative directions.
+
+The input you receive will be structured as follows:
+- BRIEF SUMMARY: A summary of the story you need to create a script for.
+- PREVIOUS VERSIONS (if any): Previous versions of the script with their prompts, to help you understand how the script has evolved.
+- CURRENT REQUEST: The specific changes or improvements requested for this version of the script.
+
+Your response should be a complete script that addresses the current request while staying true to the brief summary.
 """
 
 # OpenAI models configuration

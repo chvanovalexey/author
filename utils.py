@@ -111,19 +111,24 @@ def create_message_from_context(system_prompt, brief, selected_versions, user_pr
     """Create a message list for the OpenAI API from context components"""
     messages = [{"role": "system", "content": system_prompt}]
     
-    # Add brief
-    brief_text = f"Brief summary of the story: {brief}"
+    # Add brief with clear formatting
+    brief_text = f"===== BRIEF SUMMARY =====\nBrief summary of the story: {brief}"
     messages.append({"role": "user", "content": brief_text})
     
-    # Add selected previous versions with their actual version numbers
+    # Add selected previous versions with their actual version numbers and clear formatting
     for version in selected_versions:
         # Get version number from the version object
         version_number = version.get('version_number', 0)
-        version_text = f"Previous version {version_number}:\nPrompt: {version.get('prompt', 'No prompt')}\nContent: {version.get('content', 'No content')}"
+        version_text = (
+            f"===== PREVIOUS VERSION {version_number} =====\n"
+            f"Prompt: {version.get('prompt', 'No prompt')}\n\n"
+            f"Content: {version.get('content', 'No content')}"
+        )
         messages.append({"role": "user", "content": version_text})
     
-    # Add current prompt
-    messages.append({"role": "user", "content": user_prompt})
+    # Add current prompt with clear formatting
+    formatted_user_prompt = f"===== CURRENT REQUEST =====\n{user_prompt}"
+    messages.append({"role": "user", "content": formatted_user_prompt})
     
     return messages
 
@@ -131,18 +136,23 @@ def get_context_parts(brief, selected_versions, user_prompt):
     """Get a list of context parts for display"""
     context_parts = []
     
-    # Add brief
-    brief_text = f"Brief summary of the story: {brief}"
+    # Add brief with clear formatting
+    brief_text = f"===== BRIEF SUMMARY =====\nBrief summary of the story: {brief}"
     context_parts.append({"type": "Brief Summary", "content": brief_text})
     
-    # Add selected previous versions with their actual version numbers
+    # Add selected previous versions with their actual version numbers and clear formatting
     for version in selected_versions:
         # Get version number from the version object
         version_number = version.get('version_number', 0)
-        version_text = f"Previous version {version_number}:\nPrompt: {version.get('prompt', 'No prompt')}\nContent: {version.get('content', 'No content')}"
+        version_text = (
+            f"===== PREVIOUS VERSION {version_number} =====\n"
+            f"Prompt: {version.get('prompt', 'No prompt')}\n\n"
+            f"Content: {version.get('content', 'No content')}"
+        )
         context_parts.append({"type": f"Previous Version {version_number}", "content": version_text})
     
-    # Add current prompt
-    context_parts.append({"type": "Current Request", "content": user_prompt})
+    # Add current prompt with clear formatting
+    formatted_user_prompt = f"===== CURRENT REQUEST =====\n{user_prompt}"
+    context_parts.append({"type": "Current Request", "content": formatted_user_prompt})
     
     return context_parts 

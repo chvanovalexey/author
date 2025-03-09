@@ -375,7 +375,8 @@ if st.session_state.current_script:
                         
                         # Устанавливаем активную вкладку на последнюю (новую) версию
                         st.session_state.active_tab = len(st.session_state.script_versions) - 1
-                        
+                        #st.tabs.active_tab = len(st.session_state.script_versions) - 1
+
                         st.success("Сценарий успешно создан!")
                         st.experimental_rerun()
                     except Exception as e:

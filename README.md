@@ -1,142 +1,142 @@
-# Audio Story Script Generator
+# Генератор сценариев для аудиоисторий
 
-A Streamlit application that helps writers create and refine audio story scripts using OpenAI's language models (LLM).
+Приложение Streamlit, помогающее авторам создавать и улучшать сценарии аудиоисторий с использованием языковых моделей (LLM) OpenAI.
 
-## Features
+## Возможности
 
-- Create and manage multiple script projects
-- Generate detailed scripts from brief summaries
-- Refine scripts by providing specific instructions to the AI
-- Select previous script versions to use as context for improvements
-- Token counting and cost estimation
-- Download scripts in text format
-- Track script versions and their prompts
+- Создание и управление несколькими проектами сценариев
+- Генерация детальных сценариев на основе кратких описаний
+- Улучшение сценариев путем предоставления конкретных инструкций ИИ
+- Выбор предыдущих версий сценария для использования в качестве контекста при улучшениях
+- Подсчет токенов и оценка стоимости
+- Скачивание сценариев в текстовом формате
+- Отслеживание версий сценариев и использованных промптов
 
-## Requirements
+## Требования
 
 - Python 3.8+
 - Streamlit
-- OpenAI API key
+- Ключ API OpenAI
 
-## Installation
+## Установка
 
-1. Clone this repository:
+1. Клонируйте этот репозиторий:
    ```
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone <url-репозитория>
+   cd <директория-репозитория>
    ```
 
-2. Create a virtual environment (optional but recommended):
+2. Создайте виртуальное окружение (опционально, но рекомендуется):
    ```
    python -m venv venv
    
-   # On Windows
+   # В Windows
    venv\Scripts\activate
    
-   # On macOS or Linux
+   # В macOS или Linux
    source venv/bin/activate
    ```
 
-3. Install the required packages:
+3. Установите необходимые пакеты:
    ```
    pip install -r requirements.txt
    ```
 
-4. Set up your OpenAI API key:
-   - Create a `.streamlit` directory in the project root if it doesn't exist
-   - Create a `secrets.toml` file inside the `.streamlit` directory
-   - Add your OpenAI API key in the following format:
+4. Настройте ключ API OpenAI:
+   - Создайте директорию `.streamlit` в корне проекта, если она не существует
+   - Создайте файл `secrets.toml` внутри директории `.streamlit`
+   - Добавьте ваш ключ API OpenAI в следующем формате:
      ```toml
      [openai]
-     api_key = "your-openai-api-key-here"
+     api_key = "ваш-ключ-api-openai"
      ```
    
-   Alternatively, you can use the run script which will prompt you for your API key.
+   Альтернативно, вы можете использовать скрипт запуска, который запросит ваш ключ API.
 
-## Quick Start
+## Быстрый старт
 
-The easiest way to start the application is to use the run script:
+Самый простой способ запустить приложение — использовать скрипт запуска:
 
 ```
 python run.py
 ```
 
-This script will:
-1. Check if all required packages are installed
-2. Install any missing requirements
-3. Check if the `.streamlit/secrets.toml` file exists with an API key
-4. Prompt for an API key if needed
-5. Start the Streamlit application
+Этот скрипт:
+1. Проверит, установлены ли все необходимые пакеты
+2. Установит недостающие требования
+3. Проверит, существует ли файл `.streamlit/secrets.toml` с ключом API
+4. Запросит ключ API, если необходимо
+5. Запустит приложение Streamlit
 
-Alternatively, you can start the application directly with Streamlit:
+Альтернативно, вы можете запустить приложение напрямую с помощью Streamlit:
 
 ```
 streamlit run app.py
 ```
 
-## Usage
+## Использование
 
-1. Access the app in your web browser (typically at http://localhost:8501)
+1. Откройте приложение в веб-браузере (обычно по адресу http://localhost:8501)
 
-2. Create a new script:
-   - Click "Create New Script" in the sidebar
-   - Enter a title and brief summary of your audio story
+2. Создайте новый сценарий:
+   - Нажмите "Создать новый сценарий" в боковой панели
+   - Введите название и краткое описание вашей аудиоистории
 
-3. Generate a script:
-   - Select an AI model (GPT-4o, GPT-4o-mini, etc.)
-   - Enter a prompt describing what you want in the script
-   - Click "Generate Script"
+3. Сгенерируйте сценарий:
+   - Выберите модель ИИ (GPT-4o, GPT-4o-mini и т.д.)
+   - Введите промпт, описывающий, что вы хотите видеть в сценарии
+   - Нажмите "Сгенерировать сценарий"
 
-4. Refine your script:
-   - View the generated script
-   - Select previous versions to include as context (if applicable)
-   - Enter a new prompt describing the changes you want
-   - Generate a new version
+4. Улучшите ваш сценарий:
+   - Просмотрите сгенерированный сценарий
+   - Выберите предыдущие версии для включения в контекст (если применимо)
+   - Введите новый промпт, описывающий желаемые изменения
+   - Сгенерируйте новую версию
 
-5. Download your final script:
-   - Go to the version you want to download
-   - Click "Download this version"
+5. Скачайте ваш финальный сценарий:
+   - Перейдите к версии, которую вы хотите скачать
+   - Нажмите "Скачать эту версию"
 
-## Data Storage
+## Хранение данных
 
-The application stores data locally:
-- `data/scripts.json`: Contains metadata for all scripts
-- `data/versions_<script_id>.json`: Contains all versions of a specific script
+Приложение хранит данные локально:
+- `data/scripts.json`: Содержит метаданные для всех сценариев
+- `data/versions_<script_id>.json`: Содержит все версии конкретного сценария
 
-## Models Available
+## Доступные модели
 
-- **gpt-4o**: Highest quality, more expensive
-  - Context Window: 128K tokens
-  - Input Cost: $5 per 1M tokens
-  - Output Cost: $15 per 1M tokens
+- **gpt-4o**: Наивысшее качество, более дорогая
+  - Контекстное окно: 128K токенов
+  - Стоимость ввода: $5 за 1M токенов
+  - Стоимость вывода: $15 за 1M токенов
 
-- **gpt-4o-2024-08-06**: High quality, medium cost
-  - Context Window: 128K tokens
-  - Input Cost: $2.5 per 1M tokens
-  - Output Cost: $10 per 1M tokens
+- **gpt-4o-2024-08-06**: Высокое качество, средняя стоимость
+  - Контекстное окно: 128K токенов
+  - Стоимость ввода: $2.5 за 1M токенов
+  - Стоимость вывода: $10 за 1M токенов
 
-- **gpt-4o-mini**: Good quality, most affordable
-  - Context Window: 128K tokens
-  - Input Cost: $0.15 per 1M tokens
-  - Output Cost: $0.6 per 1M tokens
+- **gpt-4o-mini**: Хорошее качество, наиболее доступная
+  - Контекстное окно: 128K токенов
+  - Стоимость ввода: $0.15 за 1M токенов
+  - Стоимость вывода: $0.6 за 1M токенов
 
-## Advanced Configuration
+## Расширенная настройка
 
-You can modify the following files to customize the application:
+Вы можете изменить следующие файлы для настройки приложения:
 
-- `config.py`: Contains model definitions, system prompts, and other settings
-- `utils.py`: Contains utility functions for token counting, cost estimation, etc.
-- `app.py`: The main Streamlit application
-- `.streamlit/secrets.toml`: Contains your OpenAI API key and other secrets
+- `config.py`: Содержит определения моделей, системные промпты и другие настройки
+- `utils.py`: Содержит служебные функции для подсчета токенов, оценки стоимости и т.д.
+- `app.py`: Основное приложение Streamlit
+- `.streamlit/secrets.toml`: Содержит ваш ключ API OpenAI и другие секреты
 
-## Troubleshooting
+## Устранение неполадок
 
-If you encounter any issues:
+Если вы столкнулись с проблемами:
 
-1. Make sure your OpenAI API key is valid and correctly set in the `.streamlit/secrets.toml` file
-2. Check that all required packages are installed
-3. Ensure you have sufficient permissions to create and write files in the application directory
+1. Убедитесь, что ваш ключ API OpenAI действителен и правильно установлен в файле `.streamlit/secrets.toml`
+2. Проверьте, установлены ли все необходимые пакеты
+3. Убедитесь, что у вас есть достаточные права для создания и записи файлов в директории приложения
 
-## License
+## Лицензия
 
-[Your License Information] 
+[Информация о вашей лицензии] 

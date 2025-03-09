@@ -84,18 +84,31 @@ with st.sidebar:
     if st.session_state.scripts_data["scripts"]:
         st.subheader("Ваши сценарии")
         for script in st.session_state.scripts_data["scripts"]:
-            if st.button(f"{script['title']} ({script['created_at']})", key=f"btn_{script['id']}"):
-                st.session_state.current_script = script
-                
-                # Load script versions
-                st.session_state.script_versions = load_script_versions(script['id'])
-                
-                # Присваиваем номера версиям, если у них еще нет номеров
-                for i, version in enumerate(st.session_state.script_versions):
-                    if 'version_number' not in version:
-                        version['version_number'] = i + 1
-                
-                st.experimental_rerun()
+            # Используем колонки для размещения кнопки сценария и кнопки удаления
+            col1, col2 = st.columns([5, 1])
+            with col1:
+                if st.button(f"{script['title']} ({script['created_at']})", key=f"btn_{script['id']}"):
+                    st.session_state.current_script = script
+                    
+                    # Load script versions
+                    st.session_state.script_versions = load_script_versions(script['id'])
+                    
+                    # Присваиваем номера версиям, если у них еще нет номеров
+                    for i, version in enumerate(st.session_state.script_versions):
+                        if 'version_number' not in version:
+                            version['version_number'] = i + 1
+                    
+                    st.experimental_rerun()
+            with col2:
+                if st.button("🗑️", key=f"del_{script['id']}", help="Удалить сценарий"):
+                    # Удаляем сценарий из списка
+                    st.session_state.scripts_data["scripts"].remove(script)
+                    # Если это текущий сценарий, сбрасываем текущий сценарий
+                    if st.session_state.current_script and st.session_state.current_script["id"] == script["id"]:
+                        st.session_state.current_script = None
+                    # Сохраняем обновленный список сценариев
+                    save_scripts(st.session_state.scripts_data)
+                    st.experimental_rerun()
 
 # Main content area
 if st.session_state.current_script:
